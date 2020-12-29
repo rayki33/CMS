@@ -9,7 +9,7 @@ import time
 options = Options()
 # options.add_argument("--start-maximized");
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
-driver = webdriver.Chrome("./driver/chromedriver", options=options)
+driver = webdriver.Chrome("./drivers/chromedriver", options=options)
 wait = WebDriverWait(driver, 5)
 # actions = webdriver.ActionChains(driver)
 
