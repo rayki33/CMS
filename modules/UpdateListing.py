@@ -80,17 +80,10 @@ def update_options(option):
 
 
     # add new options
-    # actions.move_to_element(option_text_fields[0]).perform()
-    # actions.click(option_text_fields[0]).perform()
     i = 0
-    print("option lenght:",len(option))
 
     while i < len(option):
-        # print("update option begin")
-        # print("option: ",option[i])
-
         actions.send_keys(option[i][0] + Keys.TAB)
-        print("updated option #", option[i])
         i += 1
 
 

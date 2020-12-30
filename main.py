@@ -12,8 +12,6 @@ args = parser.parse_args()
 def read_csvfile(datafile):
     data = pd.read_csv(datafile)
     datasets = data.to_numpy()
-    # datasets = data.to_records()
-
     return datasets
 
 
