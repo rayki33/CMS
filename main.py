@@ -18,7 +18,7 @@ def read_csvfile(datafile):
 # Update Pinkoi Listing
 if args.updatelisting:
     phones = read_csvfile('data/phone-glossy.csv')
-    listings = read_csvfile('data/pinkoi-listing.csv')
+    listings = read_csvfile('data/pinkoi-listing-phonecase-glossy-tpu.csv')
 
     from modules.UpdateListing import *
     update_listing(listings,phones)

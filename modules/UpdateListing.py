@@ -155,7 +155,7 @@ def update_listing(listingIDs,phonecases):
         show_bottom_panel()
         confirm_changes()
         print("Listing #", listing_num + 1, ": ", listingIDs[listing_num,0] ," completed.")
-        print("SKU #", listing_num + 1, ": ", listingIDs[listing_num,1] ," completed.")
+        # print("SKU #", listing_num + 1, ": ", listingIDs[listing_num,1] ," completed.")
 
         close_update_complete_popup_window()
 
