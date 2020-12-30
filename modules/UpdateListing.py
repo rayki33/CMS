@@ -83,12 +83,14 @@ def update_options(option):
     # actions.move_to_element(option_text_fields[0]).perform()
     # actions.click(option_text_fields[0]).perform()
     i = 0
+    print("option lenght:",len(option))
+
     while i < len(option):
         # print("update option begin")
         # print("option: ",option[i])
 
-        actions.send_keys(option[i] + Keys.TAB)
-        # print("updated option #", i)
+        actions.send_keys(option[i][0] + Keys.TAB)
+        print("updated option #", option[i])
         i += 1
 
 
@@ -140,14 +142,14 @@ def update_option_sku(sku):
 
 
 #### The Main Program ####
-def update_listing(listingIDs,SKUs,phonecases):
+def update_listing(listingIDs,phonecases):
 
     print("Running...")
     login("csdesign","cp1q2w3e4r")
 
     listing_num = 0
     while listing_num < len(listingIDs):
-        go_to_listing(listingIDs[listing_num])
+        go_to_listing(listingIDs[listing_num,0])
 
         # if listing_num == 0:
         #      close_popup_window()
@@ -155,12 +157,12 @@ def update_listing(listingIDs,SKUs,phonecases):
         edit_options()
 
         update_options(phonecases)
-        update_option_sku(SKUs[listing_num])
+        update_option_sku(listingIDs[listing_num,1])
 
         show_bottom_panel()
         confirm_changes()
-        print("Listing #", listing_num + 1, ": ", listingIDs[listing_num] ," completed.")
-        print("SKU #", listing_num + 1, ": ", SKUs[listing_num] ," completed.")
+        print("Listing #", listing_num + 1, ": ", listingIDs[listing_num,0] ," completed.")
+        print("SKU #", listing_num + 1, ": ", listingIDs[listing_num,1] ," completed.")
 
         close_update_complete_popup_window()
 

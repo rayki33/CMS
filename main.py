@@ -12,17 +12,15 @@ args = parser.parse_args()
 def read_csvfile(datafile):
     data = pd.read_csv(datafile)
     datasets = data.to_numpy()
+    # datasets = data.to_records()
+
     return datasets
 
 
 # Update Pinkoi Listing
 if args.updatelisting:
+    phones = read_csvfile('data/phone-glossy.csv')
+    listings = read_csvfile('data/pinkoi-listing.csv')
+
     from modules.UpdateListing import *
-    update_listing(listingTPU7,skuTPU7,phonescase_glossy)
-
-
-
-
-phones = read_csvfile('data/phone-glossy.csv')
-listings = read_csvfile('data/pinkoi-listing.csv')
-print(listings[0,1])
+    update_listing(listings,phones)
