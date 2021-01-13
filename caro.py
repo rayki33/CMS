@@ -10,12 +10,23 @@ driver = webdriver.Chrome("./drivers/chromedriver", options=options)
 actions = webdriver.ActionChains(driver)
 
 def login(username,password):
-    driver.get("https://www.carousell.com.hk/csdesign/")
-    driver.find_element_by_xpath("//*[contains(text(), 'Sell')]").click()
+    driver.get("https://www.carousell.com.hk/sell")
+    txtLogin = driver.find_element_by_xpath("//*[contains(text(), 'Log in') and @type='button' ]")
+    txtLogin.click()
+    # actions.move_to_element(txtLogin).click().perform()
 
-    time.sleep(2)
-    txtLogin = driver.find_element(By.LINK_TEXT, "Log in")
-    actions.context_click(txtLogin).perform()
+
+
+    # print(txtLogin)
+    # actions.click(txtLogin).perform()
+
+
+def close_program(countdown):
+    #close windows
+    time.sleep(countdown)
+    driver.close()
+
 
 login("csdesign","chk1q2w3e4r")
-print("Done")
+print("Done and close browswer in 3s")
+close_program(3)
