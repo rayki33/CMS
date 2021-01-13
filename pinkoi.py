@@ -4,7 +4,7 @@ import numpy as np
 
 
 parser = argparse.ArgumentParser(description='Select action')
-parser.add_argument("-ul","--updatelisting", action="store_true",help="update pinkoi listing with phone model")
+parser.add_argument("-updatephone","--updatePhoneListing", action="store_true",help="update pinkoi listing with phone model")
 
 args = parser.parse_args()
 
@@ -16,9 +16,12 @@ def read_csvfile(datafile):
 
 
 # Update Pinkoi Listing
-if args.updatelisting:
+if args.updatePhoneListing:
     phones = read_csvfile('data/phone-glossy.csv')
     listings = read_csvfile('data/pinkoi-listing-phonecase-glossy-tpu.csv')
 
-    from modules.UpdateListing import *
+    from modules.pinkoi.UpdateListing import *
     update_listing(listings,phones)
+
+else:
+    print("No argument selected!")
