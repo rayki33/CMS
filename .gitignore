@@ -140,5 +140,6 @@ cython_debug/
 # Data folder
 /data
 
-# Cookies folder
+# Cookies file and folder
 /selenium
+cookies.pkl
