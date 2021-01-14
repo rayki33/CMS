@@ -1,24 +1,32 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
 import time
+import pickle
 
 options = Options()
+
+options.add_argument("user-data-dir=selenium")
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
-driver = webdriver.Chrome("./drivers/chromedriver", options=options)
+PATH = "./drivers/chromedriver"
+driver = webdriver.Chrome(PATH, options=options)
+
 actions = webdriver.ActionChains(driver)
+
 
 def login(username,password):
     driver.get("https://www.carousell.com.hk/sell")
-    txtLogin = driver.find_element_by_xpath("//*[contains(text(), 'Log in') and @type='button' ]")
-    txtLogin.click()
-    # actions.move_to_element(txtLogin).click().perform()
+    driver.find_element_by_xpath("//*[contains(text(), 'Log in') and @type='button' ]").click()
 
 
+    driver.find_element_by_xpath("//input[@name='username']").send_keys(username)
+    inputPassword = driver.find_element_by_xpath("//input[@name='password']").send_keys(password)
 
-    # print(txtLogin)
-    # actions.click(txtLogin).perform()
+    driver.find_element_by_xpath("//*[contains(text(), 'Log in') and @type='submit' ]").click()
+
+
+def sell():
+    driver.get("https://www.carousell.com.hk/sell")
 
 
 def close_program(countdown):
@@ -26,7 +34,7 @@ def close_program(countdown):
     time.sleep(countdown)
     driver.close()
 
-
-login("csdesign","chk1q2w3e4r")
-print("Done and close browswer in 3s")
-close_program(3)
+sell()
+# login("csdesign","chk1q2w3e4r")
+print("complete")
+# close_program(3)
