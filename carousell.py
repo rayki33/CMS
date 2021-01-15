@@ -4,6 +4,16 @@ from selenium.webdriver.support.ui import WebDriverWait
 import time
 import pickle
 
+import argparse
+parser = argparse.ArgumentParser(description='Select action')
+parser.add_argument("-login","--login", action="store_true",help="login to carousell")
+parser.add_argument("-sell","--sell", action="store_true",help="add a listing")
+
+args = parser.parse_args()
+
+
+
+
 options = Options()
 
 options.add_argument("user-data-dir=selenium")
@@ -27,6 +37,10 @@ def login(username,password):
 
 def sell():
     driver.get("https://www.carousell.com.hk/sell")
+    selectPhotos = driver.find_element_by_xpath("//*[contains(text(), 'Select photos') and @type='button']")
+    # print(selectPhotos)
+    actions.click(selectPhotos).perform()
+    # fileInput.sendKeys("C:/Users/raychan/Desktop/tmp/82-super-foods02-01.jpg")
 
 
 def close_program(countdown):
@@ -34,7 +48,12 @@ def close_program(countdown):
     time.sleep(countdown)
     driver.close()
 
-sell()
-# login("csdesign","chk1q2w3e4r")
-print("complete")
-# close_program(3)
+if args.login:
+    login("csdesign","chk1q2w3e4r")
+
+if args.sell:
+    sell()
+
+else:
+    print("Goodbye")
+    close_program(3)

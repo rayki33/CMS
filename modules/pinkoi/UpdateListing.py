@@ -64,6 +64,7 @@ def update_options(option):
 
     # remove old options
     option_text_fields = driver.find_elements_by_css_selector("html > body > div:nth-of-type(9) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div > div > div > div:nth-of-type(2) > div > div > div > label > input")
+    # option_text_fields = driver.find_element_by_xpath("//*[@type='button']")
     row = 0
     while row < 100 :
         # actions.move_to_element(option_text_fields[0])
