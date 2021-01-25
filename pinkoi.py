@@ -1,10 +1,9 @@
 import argparse
 import pandas as pd
-import numpy as np
 
 
 parser = argparse.ArgumentParser(description='Select action')
-parser.add_argument("-updatephone","--updatePhoneListing", action="store_true",help="update pinkoi listing with phone model")
+parser.add_argument("-updatephone", "--updatePhoneListing", action="store_true", help="update listing with phone model")
 
 args = parser.parse_args()
 
@@ -21,7 +20,7 @@ if args.updatePhoneListing:
     listings = read_csvfile('data/pinkoi-listing-phonecase-glossy-tpu-all.csv')
 
     from modules.pinkoi.UpdateListing import *
-    update_listing(listings,phones)
+    update_listing(listings, phones)
 
 else:
     print("No argument selected!")
