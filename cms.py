@@ -10,9 +10,11 @@ PASSWORD = "dkHtzKRCX2kHcMyE"
 class ContentManager():
     def __init__(self):
         self.name = "Content Manager"
+        recordset = 0
+        self.connect_to_database()
 
     def connect_to_database(self):
-        mydb = mysql.connector.connect(
+        self.mydb = mysql.connector.connect(
             host=HOST,
             # port=PORT,
             database=DATABASE,
@@ -20,8 +22,9 @@ class ContentManager():
             password=PASSWORD
 
         )
-        # print(mydb)
+        print("Database is successfully connected.")
         return True
 
     def success(self):
         print("success!")
+
