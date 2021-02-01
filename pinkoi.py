@@ -1,26 +1,24 @@
-import argparse
+import chardet
 import pandas as pd
 
 
-parser = argparse.ArgumentParser(description='Select action')
-parser.add_argument("-updatephone", "--updatePhoneListing", action="store_true", help="update listing with phone model")
+class Pinkoi:
+    def __init__(self):
+        pass
 
-args = parser.parse_args()
+    def read_order_csv(self, csv_filename):
+        # read order csv file
+
+        with open(csv_filename,'rb') as f:
+            result = chardet.detect(f.read())
+            df = pd.read_csv(csv_filename, encoding=result['encoding'], sep='\t', quotechar='"')
+        return df
 
 
-def read_csvfile(datafile):
-    data = pd.read_csv(datafile)
-    datasets = data.to_numpy()
-    return datasets
+    #todo: login
+    #todo: order handling
+    #todo: download orders in csv format
+    #todo: save ONLY orders that are not found in database
+    #todo: check whether the order exists in the database
+    #todo: check element location exist
 
-
-# Update Pinkoi Listing
-if args.updatePhoneListing:
-    phones = read_csvfile('data/phone-glossy.csv')
-    listings = read_csvfile('data/pinkoi-listing-phonecase-glossy-tpu-all.csv')
-
-    from modules.pinkoi.UpdateListing import *
-    update_listing(listings, phones)
-
-else:
-    print("No argument selected!")

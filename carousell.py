@@ -47,7 +47,7 @@ def close_program(countdown):
 if args.login:
     login("csdesign", "chk1q2w3e4r")
 
-if args.sell:
+elif args.sell:
     sell()
 
 else:
