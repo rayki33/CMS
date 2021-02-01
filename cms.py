@@ -11,7 +11,6 @@ class ContentManager():
     def __init__(self):
         self.name = "Content Manager"
         recordset = 0
-        self.connect_to_database()
 
     def connect_to_database(self):
         self.mydb = mysql.connector.connect(
