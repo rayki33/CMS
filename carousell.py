@@ -49,3 +49,12 @@ class Carousell:
             write(new_file)
             write(" ")
         press('enter')
+
+    # select category
+    def select_category(self):
+        time.sleep(1)
+        btn_category = self.driver.find_element_by_xpath("//*[contains(text(), 'Select a category')]")
+        print(btn_category)
+        btn_category.click()
+        time.sleep(1)
+        # write("Electronics & Gadgets")
