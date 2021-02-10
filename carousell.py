@@ -1,55 +1,51 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from pyautogui import write, press
+
 import time
 
-import argparse
-
-parser = argparse.ArgumentParser(description='Select action')
-parser.add_argument("-login", "--login", action="store_true", help="login to Carousell")
-parser.add_argument("-sell", "--sell", action="store_true", help="add a listing")
-
-args = parser.parse_args()
-
-options = Options()
-
-options.add_argument("user-data-dir=selenium")
-options.add_experimental_option('excludeSwitches', ['enable-logging'])
 PATH = "./drivers/chromedriver"
-driver = webdriver.Chrome(PATH, options=options)
-
-actions = webdriver.ActionChains(driver)
+FOLDER_PATH = "C:\\Users\\raychan\\Desktop\\inventory image - temp"
 
 
-def login(username, password):
-    driver.get("https://www.carousell.com.hk/sell")
-    driver.find_element_by_xpath("//*[contains(text(), 'Log in') and @type='button' ]").click()
+class Carousell:
+    def __init__(self):
+        self.username = "csdesign"
+        self.password = "chk1q2w3e4r"
 
-    driver.find_element_by_xpath("//input[@name='username']").send_keys(username)
-    driver.find_element_by_xpath("//input[@name='password']").send_keys(password)
+        self.options = Options()
+        self.options.add_argument("user-data-dir=selenium")
+        self.options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
-    driver.find_element_by_xpath("//*[contains(text(), 'Log in') and @type='submit' ]").click()
+        self.driver = webdriver.Chrome(PATH, options=self.options)
+        self.actions = webdriver.ActionChains(self.driver)
+        self.image_files = [("AP2C-EB-01AG.jpg", "AP2C-EB-01DR.jpg")]
 
+    def login(self):
+        self.driver.get("https://www.carousell.com.hk/sell")
+        self.driver.find_element_by_xpath("//*[contains(text(), 'Log in') and @type='button' ]").click()
 
-def sell():
-    driver.get("https://www.carousell.com.hk/sell")
-    select_photos = driver.find_element_by_xpath("//*[contains(text(), 'Select photos') and @type='button']")
-    # print(select_photos)
-    actions.click(select_photos).perform()
-    # fileInput.sendKeys("C:/Users/raychan/Desktop/tmp/82-super-foods02-01.jpg")
+        self.driver.find_element_by_xpath("//input[@name='username']").send_keys(self.username)
+        self.driver.find_element_by_xpath("//input[@name='password']").send_keys(self.password)
 
+        self.driver.find_element_by_xpath("//*[contains(text(), 'Log in') and @type='submit' ]").click()
 
-def close_program(countdown):
-    # close windows
-    time.sleep(countdown)
-    driver.close()
+    def sell(self):
+        self.driver.get("https://www.carousell.com.hk/sell")
+        select_photos = self.driver.find_element_by_xpath("//*[contains(text(), 'Select photos') and @type='button']")
+        self.actions.click(select_photos).perform()
+        time.sleep(3)
 
+        self.input_filename()
 
-if args.login:
-    login("csdesign", "chk1q2w3e4r")
+    def input_filename(self):
+        new_folder_path = '"' + FOLDER_PATH + '"'
+        write(new_folder_path)
+        press('enter')
+        time.sleep(2)
 
-elif args.sell:
-    sell()
-
-else:
-    print("Goodbye")
-    close_program(3)
+        for image_file in self.image_files[0]:
+            new_file = '"' + image_file + '"'
+            write(new_file)
+            write(" ")
+        press('enter')
