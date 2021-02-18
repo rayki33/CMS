@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from pyautogui import write, press
+from pyautogui import write, press, click
 
 import time
 
@@ -52,9 +52,14 @@ class Carousell:
 
     # select category
     def select_category(self):
-        time.sleep(1)
+        time.sleep(1.5)
         btn_category = self.driver.find_element_by_xpath("//*[contains(text(), 'Select a category')]")
         print(btn_category)
         btn_category.click()
+        # for tab in range(0, 13):
+        #     press("tab")
+
+
+        # write("gadget")
         time.sleep(1)
-        # write("Electronics & Gadgets")
+        write("Electronics & Gadgets")

@@ -5,7 +5,7 @@ class Wordpress:
     def __init__(self):
         pass
 
-    def read_product_csv(self, csv_file):
+    def read_csv(self, csv_file):
         # read order csv file
         with open(csv_file, 'rb') as f:
             result = chardet.detect(f.read())

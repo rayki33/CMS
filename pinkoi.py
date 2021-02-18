@@ -6,7 +6,7 @@ class Pinkoi:
     def __init__(self):
         pass
 
-    def read_order_csv(self, csv_filename):
+    def read_csv(self, csv_filename):
         # read order csv file
 
         with open(csv_filename,'rb') as f:
