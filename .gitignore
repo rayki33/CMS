@@ -143,3 +143,4 @@ cython_debug/
 # Cookies file and folder
 /selenium
 cookies.pkl
+./export
