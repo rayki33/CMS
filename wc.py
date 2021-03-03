@@ -1,30 +1,60 @@
 from woocommerce import API
-import pandas as pd
-import openpyxl
-
-consumer_key = "ck_119365fc642a9129cfaadf213f8bace06c623c9f"
-consumer_secret = "cs_fea9c7552cf3cba6a590172ae8c02700e63cb2c7"
-
+from settings import CONSUMER_KEY, CONSUMER_SECRET
 
 wcapi = API(
     url="https://www.thecsdesign.com",
-    consumer_key=consumer_key,
-    consumer_secret=consumer_secret,
+    consumer_key=CONSUMER_KEY,
+    consumer_secret=CONSUMER_SECRET,
     wp_api=True,
-    version="wc/v3"
+    version="wc/v3",
+    timeout=10
 )
 
-data_json = wcapi.get("products").json()
-# print(data_json)
-wp_products = pd.DataFrame(data_json)
-# print(wp_products[{"name", "sku", "description", "images"}])
-# wp_products[{"name", "sku", "description", "images"}].to_excel('./export/wp_product.xlsx')
+product_id = 2593
+data = wcapi.get(f'products/{product_id}', params={"lang": "en"}).json()
+
+name = data["name"]
+description = data["description"]
+
+print(name)
+
+images = data["images"]
+# for image in images:
+    # print(image["src"])
+
+image_1 = images[0]["src"]
+print(image_1)
+
+import requests
+
+api_key = 'acc_0dd6492e5c12fae'
+api_secret = '7af065628a007809449698cc5cdf74f3'
+image_url = image_1
+
+## tags ##
+response = requests.get(
+    'https://api.imagga.com/v2/tags?image_url=%s' % image_url,
+    auth=(api_key, api_secret))
+
+image_tags = response.json()["result"]["tags"]
+print(image_tags[0],image_tags[1])
+
+# for tag in image_tags:
+#     print(tag["tag"])
 
 
-product = wp_products.loc[8]
-print(product)
+## color ##
+response = requests.get(
+    'https://api.imagga.com/v2/colors?image_url=%s' % image_url,
+    auth=(api_key, api_secret))
+
+colors = response.json()["result"]["colors"]["image_colors"]
+for color in colors:
+    print(round(color["percent"], 2),"% : ", color["closest_palette_color"])
 
 
-images = product['images']
-for image in images:
-    print(image['src'])
+## clean up HTML ##
+# from bs4 import BeautifulSoup
+#
+# clean_description = BeautifulSoup(description, "lxml").text
+# print(clean_description)
