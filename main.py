@@ -1,6 +1,6 @@
 from pinkoi import Pinkoi
 from wordpress import Wordpress
-from datafiles import WP_PRODUCT_CSV, PK_ORDERS_CSV
+from settings import WP_PRODUCT_CSV, PK_ORDERS_CSV
 
 pk = Pinkoi()
 wp = Wordpress()

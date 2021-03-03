@@ -6,6 +6,8 @@ DATABASE = "open3ame"
 USER = "open3ame"
 PASSWORD = "dkHtzKRCX2kHcMyE"
 
+
+
 # SQL
 # Create table
 
