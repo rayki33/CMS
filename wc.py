@@ -1,6 +1,7 @@
 from woocommerce import API
 from settings import CONSUMER_KEY, CONSUMER_SECRET, WEBSITE_URL
 from bs4 import BeautifulSoup
+from math import *
 
 wcapi = API(
     url="https://www.thecsdesign.com",
@@ -97,21 +98,20 @@ def get_title(product_id, language = ""):
     return title
 
 
-# print(get_title(3134))
-# print(get_description(3134))
+def get_tags(product_id):
 
-print(get_tags_by_image(3134))
+    tags = []
 
-for tag in get_tags_by_image(3134):
-    # tags.append(tag["tag"]["en"])
-    # print(tag["confidence"])
-    tags = {
-        "confidence": tag["confidence"],
-        "tag": tag["tag"]["en"]
+    for tag in get_tags_by_image(product_id):
+        new_tag = {
+            "name": tag["tag"]["en"],
+            "confidence": floor(tag["confidence"])
         }
+        tags.append(new_tag)
 
+    return tags
 
-
-print(tags)
-
-# print(get_image_url(3134)[0])
+print(get_title(3042))
+for tag in get_tags(3042):
+    if tag['confidence'] > 20:
+        print(tag['name'], ":", tag['confidence'])
