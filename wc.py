@@ -11,37 +11,34 @@ wcapi = API(
     timeout=10
 )
 
-product_id = 2593
-data = wcapi.get(f'products/{product_id}', params={"lang": "en"}).json()
+def get_image_url(product_id):
+    data = wcapi.get(f'products/{product_id}').json()
 
-name = data["name"]
-description = data["description"]
+    images = data["images"]
+    image = images[0]["src"]
+    image_src = []
 
-# print(name)
+    for image in images:
+        image_src.append(image["src"])
 
-images = data["images"]
-# for image in images:
-# print(image["src"])
-
-image_1 = images[0]["src"]
-# print(image_1)
+    return image_src
 
 import requests
 
 api_key = 'acc_0dd6492e5c12fae'
 api_secret = '7af065628a007809449698cc5cdf74f3'
-image_url = image_1
 
 
-def tags():
+def get_tags_by_image(product_id):
     ## tags ##
     global api_key, api_secret, image_url
     response = requests.get(
-        'https://api.imagga.com/v2/tags?image_url=%s' % image_url,
+        'https://api.imagga.com/v2/tags?image_url=%s' % get_image_url(product_id)[0],
         auth=(api_key, api_secret))
 
     image_tags = response.json()["result"]["tags"]
-    print(image_tags[0], image_tags[1])
+
+    return image_tags
 
     # for tag in image_tags:
     #     print(tag["tag"])
@@ -70,13 +67,13 @@ def auth_product(product_id, language=""):
     return response
 
 
-def title(product_id, language=""):
+def get_title_json(product_id, language=""):
     response = auth_product(product_id, language)
     title = response.json()["product"]["title"]
     return (title)
 
 
-def description(product_id, language=""):
+def get_description(product_id, language=""):
     response = auth_product(product_id, language)
     description_html = response.json()["product"]["description"]
 
@@ -92,17 +89,29 @@ def clean_html(html_code):
     return clean_text
 
 
-# print(title(3134, "en"))
-# print(description(3134,"en"))
 
-def get_english_title():
-    respond = requests.get("https://www.thecsdesign.com/en/product/?p=3134").content
-
+def get_title(product_id, language = ""):
+    respond = requests.get(f"{WEBSITE_URL}{language}/product/?p={product_id}").content
     soup = BeautifulSoup(respond, 'html.parser')
+    title = soup.select('h1.product_title')[0].text.strip()
+    return title
 
-    title_html = soup.find_all('h1', attrs={'class': 'product_title'})[0]
-    # title = BeautifulSoup(title_html[0], "lxml").text
 
-    return title_html
+# print(get_title(3134))
+# print(get_description(3134))
 
-print(get_english_title())
+print(get_tags_by_image(3134))
+
+for tag in get_tags_by_image(3134):
+    # tags.append(tag["tag"]["en"])
+    # print(tag["confidence"])
+    tags = {
+        "confidence": tag["confidence"],
+        "tag": tag["tag"]["en"]
+        }
+
+
+
+print(tags)
+
+# print(get_image_url(3134)[0])
