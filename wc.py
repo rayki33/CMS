@@ -9,7 +9,7 @@ wcapi = API(
     consumer_secret=CONSUMER_SECRET,
     wp_api=True,
     version="wc/v3",
-    timeout=10
+    timeout=20
 )
 
 def get_image_url(product_id):
@@ -111,7 +111,21 @@ def get_tags(product_id):
 
     return tags
 
-print(get_title(3042))
-for tag in get_tags(3042):
-    if tag['confidence'] > 20:
-        print(tag['name'], ":", tag['confidence'])
+
+# print(get_title(3042,"en"))
+# for tag in get_tags(3042):
+#     if tag['confidence'] > 20:
+#         print(tag['name'], ":", tag['confidence'])
+
+def list_all_products():
+    global wcapi
+    page = 1
+    all_products = []
+
+    products = wcapi.get(f"products?per_page=100&page={page}").json()
+    for product in products:
+        all_products.append([product["id"], product["name"]])
+
+    return all_products
+
+print(list_all_products())
