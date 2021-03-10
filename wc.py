@@ -118,11 +118,11 @@ def list_all_products():
     global wcapi
     page = 1
     product_list = []
-    per_page_item = 3  # 1 to 100
+    per_page_item = 100  # 1 to 100
 
     products = wcapi.get(f"products?per_page={per_page_item}&page={page}").json()
 
-    while products and page <= 3:
+    while products:
         if products:
             for p in products:
                 name_en = get_title(p["id"], "en")
