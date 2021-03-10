@@ -118,11 +118,11 @@ def list_all_products():
     global wcapi
     page = 1
     product_list = []
-    per_page_item = 2  # 1 to 100
+    per_page_item = 3  # 1 to 100
 
     products = wcapi.get(f"products?per_page={per_page_item}&page={page}").json()
 
-    while products and page == 1:
+    while products and page <= 3:
         if products:
             for p in products:
                 name_en = get_title(p["id"], "en")
@@ -138,7 +138,11 @@ def list_all_products():
 all_products = list_all_products()
 with open('result.txt', 'w') as f:
     for p in all_products:
-        f.write(str(p[0]),",")
+        product_id = p[0]
+        sku = p[1]
+        product_name = p[2]
+        product_name_en = p[3]
+        f.write(f"{product_id},{sku},{product_name},{product_name_en}\n")
 
 
 # with open('result.txt', 'w') as f:
