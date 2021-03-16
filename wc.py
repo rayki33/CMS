@@ -1,11 +1,9 @@
 from woocommerce import API
-from settings import CONSUMER_KEY, CONSUMER_SECRET, WEBSITE_URL
+from settings import CONSUMER_KEY, CONSUMER_SECRET, WEBSITE_URL, IMAGGA_API_KEY, IMAGGA_API_SECRET
 from bs4 import BeautifulSoup
 from math import *
 import requests
 
-api_key = 'acc_0dd6492e5c12fae'
-api_secret = '7af065628a007809449698cc5cdf74f3'
 
 wcapi = API(
     url="https://www.thecsdesign.com",
@@ -29,33 +27,26 @@ def get_image_url(product_id):
     return image_src
 
 
-def get_tags_by_image(product_id):
-    # tags #
-    global api_key, api_secret
+def get_tags_by_image(product_id, language="en"):
     response = requests.get(
-        'https://api.imagga.com/v2/tags?image_url=%s' % get_image_url(product_id)[0],
-        auth=(api_key, api_secret))
+        f'https://api.imagga.com/v2/tags?image_url=%s&language={language}' % get_image_url(product_id)[0],
+        auth=(IMAGGA_API_KEY, IMAGGA_API_SECRET))
 
     image_tags = response.json()["result"]["tags"]
 
     return image_tags
 
-    # for tag in image_tags:
-    #     print(tag["tag"])
-
 
 def color(product_id):
-    # color #
-    global api_key, api_secret
     image_url = get_image_url(product_id)
     response = requests.get(
-        'https://api.imagga.com/v2/colors?image_url=%s' % image_url,
-        auth=(api_key, api_secret))
+        'https://api.imagga.com/v2/colors?image_url=%s' % image_url[0],
+        auth=(IMAGGA_API_KEY, IMAGGA_API_SECRET))
 
     colors = response.json()["result"]["colors"]["image_colors"]
-    for predicted_color in colors:
-        print(round(predicted_color["percent"], 2), "% : ", predicted_color["closest_palette_color"])
-
+    # for predicted_color in colors:
+    #     print(round(predicted_color["percent"], 2), "% : ", predicted_color["closest_palette_color"])
+    return colors
 
 def auth_product(product_id, language=""):
     time_out = 20
@@ -96,23 +87,18 @@ def get_title(product_id, language=""):
     return title
 
 
-def get_tags(product_id):
+def get_tags(product_id, language="en"):
     tags = []
 
-    for tag in get_tags_by_image(product_id):
+    for tag in get_tags_by_image(product_id, language):
         new_tag = {
-            "name": tag["tag"]["en"],
+            "name": tag["tag"][f"{language}"],
             "confidence": floor(tag["confidence"])
         }
         tags.append(new_tag)
 
     return tags
 
-
-# print(get_title(3042,"en"))
-# for tag in get_tags(3042):
-#     if tag['confidence'] > 20:
-#         print(tag['name'], ":", tag['confidence'])
 
 def list_all_products():
     global wcapi
@@ -135,22 +121,15 @@ def list_all_products():
     return product_list
 
 
-all_products = list_all_products()
-with open('result.txt', 'w') as f:
-    for p in all_products:
-        product_id = p[0]
-        sku = p[1]
-        product_name = p[2]
-        product_name_en = p[3]
-        f.write(f"{product_id},{sku},{product_name},{product_name_en}\n")
+def save_all_products():
+    all_products = list_all_products()
+    with open('result.txt', 'w', encoding='utf-8') as f:
+        for p in all_products:
+            product_id = p[0]
+            sku = p[1]
+            product_name = p[2]
+            product_name_en = p[3]
+            f.write(f"{product_id},{sku},{product_name},{product_name_en}\n")
 
 
-# with open('result.txt', 'w') as f:
-#     for product in all_products:
-#         f.newlines(product[0])
-
-# all_products = [[1,"A"],[2,"B"],[3,"C"], [4,"D"]]
-#
-# with open('result.txt', 'w') as f:
-#     for product in all_products:
-#         f.write("%s\n" % product)
+# save_all_products()
