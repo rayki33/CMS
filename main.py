@@ -1,18 +1,22 @@
-from pinkoi import Pinkoi
-from wordpress import Wordpress
-from settings import WP_PRODUCT_CSV, PK_ORDERS_CSV
-
+import pandas as pd
+from carousell import *
 from wc import *
 
-print(get_title(2510, "en"))
-#
-# for tag in get_tags(2510):
-#     if tag["confidence"] > 10:
-#         print(tag["name"])
+def main(product_id):
+    # print(get_title(product_id, "zh"))
+    tags = (get_tags(product_id, "zh_cht"))
+    # for tag in tags:
+    #     if tag["confidence"] > 30:
+    #         print(tag)
+    for color in get_colors(product_id):
+        color_parents = color["closest_palette_color_parent"]
+        print(color_parents)
 
-# print(color(2510))
-# print(get_tags_by_image(2510, "zh_cht"))
-tags = (get_tags(2510, "zh_cht"))
-for tag in tags:
-    if tag["confidence"] > 15:
-        print(tag["name"])
+# main(2230)
+# data = pd.read_csv("data/no_attribute_product.txt").to_dict(orient="list")["product_id"]
+
+def main_carousell(product_id):
+    cs = Carousell()
+    cs.sell(product_id)
+
+main_carousell(2230)

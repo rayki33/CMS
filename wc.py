@@ -37,7 +37,7 @@ def get_tags_by_image(product_id, language="en"):
     return image_tags
 
 
-def color(product_id):
+def get_colors(product_id):
     image_url = get_image_url(product_id)
     response = requests.get(
         'https://api.imagga.com/v2/colors?image_url=%s' % image_url[0],
@@ -132,4 +132,6 @@ def save_all_products():
             f.write(f"{product_id},{sku},{product_name},{product_name_en}\n")
 
 
-# save_all_products()
+def get_filtered_products():
+    respond = requests.get(WEBSITE_URL)
+    print(respond)

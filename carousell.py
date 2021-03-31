@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from pyautogui import write, press, click
+from wc import *
 
 import time
 
@@ -16,10 +17,10 @@ class Carousell:
         self.options = Options()
         self.options.add_argument("user-data-dir=selenium")
         self.options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        self.options.add_experimental_option("detach", True)
 
         self.driver = webdriver.Chrome(PATH, options=self.options)
         self.actions = webdriver.ActionChains(self.driver)
-        self.image_files = [("AP2C-EB-01AG.jpg", "AP2C-EB-01DR.jpg")]
 
     def login(self):
         self.driver.get("https://www.carousell.com.hk/sell")
@@ -28,27 +29,31 @@ class Carousell:
         self.driver.find_element_by_xpath("//input[@name='username']").send_keys(self.username)
         self.driver.find_element_by_xpath("//input[@name='password']").send_keys(self.password)
 
-        self.driver.find_element_by_xpath("//*[contains(text(), 'Log in') and @type='submit' ]").click()
+        self.element_locator = self.driver.find_element_by_xpath("//*[contains(text(), 'Log in') and @type='submit' ]")
+        # self.element_locator.click()
+        # actions.contextClick(elementLocator).perform()
 
-    def sell(self):
+    def sell(self, product_id):
         self.driver.get("https://www.carousell.com.hk/sell")
-        select_photos = self.driver.find_element_by_xpath("//*[contains(text(), 'Select photos') and @type='button']")
-        self.actions.click(select_photos).perform()
+        select_photos_button = self.driver.find_element_by_xpath("//*[contains(text(), 'Select photos') and @type='button']")
+        self.actions.click(select_photos_button).perform()
         time.sleep(3)
 
-        self.input_filename()
+        self.input_filename(product_id)
 
-    def input_filename(self):
-        new_folder_path = '"' + FOLDER_PATH + '"'
-        write(new_folder_path)
-        press('enter')
-        time.sleep(2)
+    def input_filename(self, product_id):
+        image_urls = get_image_url(product_id)
+        for image_url in image_urls:
+            print(image_url)
+            write(f'"{image_url}"')
+            press("enter")
+            time.sleep(5)
+            self.select_photos()
 
-        for image_file in self.image_files[0]:
-            new_file = '"' + image_file + '"'
-            write(new_file)
-            write(" ")
-        press('enter')
+    def select_photos(self):
+        select_photos_button = self.driver.find_element_by_xpath("//*[contains(text(), 'Select photos') and @type='button']")
+        print(select_photos_button)
+        self.actions.doubleClick(select_photos_button).perform()
 
     # select category
     def select_category(self):

@@ -8,19 +8,30 @@ parser.add_argument("-updatephone", "--updatePhoneListing", action="store_true",
 args = parser.parse_args()
 
 
+
+
 def read_csvfile(datafile):
     data = pd.read_csv(datafile)
     datasets = data.to_numpy()
     return datasets
 
 
-# Update Pinkoi Listing
-if args.updatePhoneListing:
-    phones = read_csvfile('data/phone-glossy.csv')
-    listings = read_csvfile('data/pinkoi-listing-phonecase-glossy-tpu-all.csv')
+# # Update Pinkoi Listing
+# if args.updatePhoneListing:
+#     phones = read_csvfile('data/phone-glossy.csv')
+#     listings = read_csvfile('data/pinkoi-listing-phonecase.csv')
+#
+#     from modules.pinkoi.UpdateListing import *
+#     update_listing(listings, phones)
+#
+# else:
+#     print("No argument selected!")
+#
+#
 
-    from modules.pinkoi.UpdateListing import *
-    update_listing(listings, phones)
 
-else:
-    print("No argument selected!")
+phones = read_csvfile('data/phone-glossy.csv')
+listings = read_csvfile('data/pinkoi-listing-phonecase.csv')
+
+from modules.pinkoi.UpdateListing import *
+update_listing(listings, phones)

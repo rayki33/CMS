@@ -12,6 +12,7 @@ options.add_experimental_option('excludeSwitches', ['enable-logging'])
 driver = webdriver.Chrome("./drivers/chromedriver", options=options)
 wait = WebDriverWait(driver, 5)
 # actions = webdriver.ActionChains(driver)
+options.add_experimental_option("detach", True)
 
 
 def login(username,password):
@@ -63,8 +64,9 @@ def update_options(option):
     actions = webdriver.ActionChains(driver)
 
     # remove old options
-    option_text_fields = driver.find_elements_by_css_selector("html > body > div:nth-of-type(9) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div > div > div > div:nth-of-type(2) > div > div > div > label > input")
+    # option_text_fields = driver.find_elements_by_css_selector("html > body > div:nth-of-type(9) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div > div > div > div:nth-of-type(2) > div > div > div > label > input")
     # option_text_fields = driver.find_element_by_xpath("//*[@type='button']")
+    option_text_fields = driver.find_element_by_class_name(".g-form-input-wrapper")
     row = 0
     while row < 100 :
         # actions.move_to_element(option_text_fields[0])
@@ -161,7 +163,7 @@ def update_listing(listingIDs,phonecases):
         close_update_complete_popup_window()
 
 
-        listing_num += 1
+        listing_num += 1up
         time.sleep(5)
     close_program()
     print("Done!")
