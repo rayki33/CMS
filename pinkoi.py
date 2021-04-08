@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 import time
+from pyautogui import press, write
 
 # import clipboard
 
@@ -73,16 +74,16 @@ class Pinkoi:
             actions.key_down(Keys.CONTROL).send_keys("a").key_up(Keys.CONTROL).send_keys(Keys.DELETE).perform()
             input_box_value = input_box.get_attribute("value")
 
-    def get_phone_case(self):
+    def get_phone_cases(self):
         df = pd.read_csv(self.phone_case_model)
         phone_cases = [item for item in df["Model"]]
         return phone_cases
 
     def add_phone_models(self):
-        phone_cases = self.get_phone_case()
+        phone_cases = self.get_phone_cases()
 
-        for phone_case in phone_cases[:3]:
-            print(phone_case)
+        for phone_case in phone_cases:
+            # print(phone_case)
             # clipboard.copy(phone_case)
             # actions.key_down(Keys.CONTROL).send_keys("V").key_up(Keys.CONTROL).send_keys(Keys.TAB)
             actions.send_keys(phone_case).send_keys(Keys.TAB)
@@ -114,9 +115,17 @@ class Pinkoi:
         driver.close()
 
     def update_option_sku(self, sku):
-        # sku_text_box = driver.find_element_by_css_selector(".m-react-text-field .g-form-input-wrapper .g-form-input")
-        # actions.send_keys(sku)
-        pass
+        time.sleep(2)
+        sku_text_box = driver.find_element_by_css_selector(".m-react-listing-variation-table .g-flexbox .g-spacing-pl-tiny .g-form-input-wrapper .g-form-input")
+        sku_text_box.send_keys(Keys.CONTROL + "a")
+        sku_text_box.send_keys(Keys.DELETE)
+        sku_text_box.send_keys(sku)
+
+        for phone in self.get_phone_cases()[:-2]:
+            press('tab')
+            write(sku)
+
+
 
     def update_phone_models(self):
         self.login(PINKOI_USERNAME, PINKOI_PASSWORD)
@@ -128,12 +137,12 @@ class Pinkoi:
 
         self.add_phone_models()
         self.press_apply_changes()
-        self.update_option_sku()
+        self.update_option_sku(product_list.loc[0]['SKU'])
 
         self.show_bottom_action_panel()
         self.confirm_changes()
         self.close_update_complete_popup_window()
-        # self.close_windows()
+        self.close_windows()
 
 
 pk = Pinkoi()

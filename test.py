@@ -1,3 +1,11 @@
-from wc import *
+phones = ['iPhone 12 mini', 'iPhone 12 Pro Max', 'iPhone 12 Pro', 'iPhone 12', 'iPhone SE 2020', 'iPhone 11 Pro Max', 'iPhone 11 Pro', 'iPhone 11', 'iPhone XS Max', 'iPhone XS', 'iPhone XS Max', 'iPhone XR', 'iPhone X', 'iPhone 8 Plus', 'iPhone 8', 'iPhone 7 Plus', 'iPhone 7', 'iPhone 6', 'iPhone 6s', 'iPhone 6 Plus', 'iPhone 6s Plus', 'Samsung S21 Ultra 5G', 'Samsung S21+ 5G', 'Samsung S21 5G', 'Samsung S20+', 'Samsung S20 Ultra 5G', 'Samsung S20 FE 5G', 'Samsung S20', 'Samsung S20 5G', 'Samsung S20+ 5G', 'Samsung S10e', 'Samsung S10+', 'Samsung S10 Lite', 'Samsung S10', 'Samsung S9+', 'Samsung S9', 'Samsung Note 20 Ultra 5G', 'Samsung Note 20 5G', 'Samsung Note 10 Lite', 'Samsung Note 10+', 'Samsung Note 10', 'Samsung Note 9', 'Samsung Note 8', 'Samsung A80', 'Samsung A71', 'Samsung A70', 'Samsung A60', 'Samsung A51', 'Samsung A50s', 'Samsung A42 5G', 'Samsung A40s', 'Samsung A31', 'Samsung A21s', 'Samsung A20s', 'Xiaomi 11', 'Xiaomi 10', 'Xiaomi 10 Pro', 'Redmi K30 Pro', 'Huawei P20', 'Huawei P20 Lite', 'Huawei P20 Pro', 'Huawei P30', 'Huawei P30 Pro', 'Huawei P30 Lite', 'Huawei P40', 'Huawei P40 Pro', 'Huawei P40 Pro+', 'Huawei Y6P', 'Huawei Y6S', 'Huawei Y9S', 'Huawei Mate 20', 'Huawei Mate 20 Pro', 'Huawei Mate 20 X', 'Huawei Mate 30 Pro', 'Huawei Mate P40 Pro', 'Huawei Nova 7', 'Huawei Nova 7 SE', '其他型號請聯絡客服']
 
-get_filtered_products()
+print(type(phones))
+
+x = 0
+
+for phone in phones:
+    x += 1
+    print(x)
+
+print(len(phones))
