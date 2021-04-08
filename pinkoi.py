@@ -13,12 +13,6 @@ PINKOI_PASSWORD = "cp1q2w3e4r"
 options = Options()
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
 driver = webdriver.Chrome("./drivers/chromedriver", options=options)
-actions = webdriver.ActionChains(driver)
-
-
-def hide_bottom_action_panel():
-    bottom_action_panel = driver.find_element_by_class_name("m-react-bottom-action-panel")
-    driver.execute_script("arguments[0].setAttribute('style','visibility: hidden;')", bottom_action_panel)
 
 
 class Pinkoi:
@@ -26,6 +20,14 @@ class Pinkoi:
         self.listing_data = "./data/pinkoi-listing-phonecase.csv"
         self.phone_case_model = "./data/phone-glossy.csv"
         self.phone_case_listings = "./data/pinkoi-listing-phonecase.csv"
+        self.actions = webdriver.ActionChains(driver)
+
+    def hide_bottom_action_panel(self):
+        bottom_action_panel = driver.find_element_by_class_name("m-react-bottom-action-panel")
+        driver.execute_script("arguments[0].setAttribute('style','visibility: hidden;')", bottom_action_panel)
+
+    def reset_action(self):
+        self.actions = webdriver.ActionChains(driver)
 
     def get_product_list_to_update(self):
         # read order csv file
@@ -54,9 +56,10 @@ class Pinkoi:
 
     def select_edit_options(self):
         time.sleep(1)
-        hide_bottom_action_panel()
+        self.actions.reset_actions()
+        self.hide_bottom_action_panel()
         edit_option_text = driver.find_element_by_xpath("//*[contains(text(), '修改規格')]")
-        actions.move_to_element(edit_option_text).click().perform()
+        self.actions.move_to_element(edit_option_text).click().perform()
 
     def show_bottom_action_panel(self):
         bottom_action_panel = driver.find_element_by_class_name("m-react-bottom-action-panel")
@@ -66,12 +69,12 @@ class Pinkoi:
         input_box = driver.find_element_by_css_selector(".m-react-listing-custom-variation-inputs .g-form-input")
         input_box_value = input_box.get_attribute("value")
 
-        actions.click(input_box).perform()
+        self.actions.click(input_box).perform()
         # actions.move_to_element(input_box).context_click().perform()
         # actions.move_to_element(input_box).double_click().perform()
 
         while input_box_value:
-            actions.key_down(Keys.CONTROL).send_keys("a").key_up(Keys.CONTROL).send_keys(Keys.DELETE).perform()
+            self.actions.key_down(Keys.CONTROL).send_keys("a").key_up(Keys.CONTROL).send_keys(Keys.DELETE).perform()
             input_box_value = input_box.get_attribute("value")
 
     def get_phone_cases(self):
@@ -86,9 +89,9 @@ class Pinkoi:
             # print(phone_case)
             # clipboard.copy(phone_case)
             # actions.key_down(Keys.CONTROL).send_keys("V").key_up(Keys.CONTROL).send_keys(Keys.TAB)
-            actions.send_keys(phone_case).send_keys(Keys.TAB)
+            self.actions.send_keys(phone_case).send_keys(Keys.TAB)
 
-        actions.perform()
+        self.actions.perform()
 
     def press_apply_changes(self):
         time.sleep(1)
@@ -131,19 +134,25 @@ class Pinkoi:
         self.login(PINKOI_USERNAME, PINKOI_PASSWORD)
         product_list = self.get_product_list_to_update()
 
-        self.go_to_listing(product_list.loc[0]['listing_id'])
-        self.select_edit_options()
-        self.remove_previous_options()
+        x = 0
+        while len(product_list) > x:
 
-        self.add_phone_models()
-        self.press_apply_changes()
-        self.update_option_sku(product_list.loc[0]['SKU'])
+            self.go_to_listing(product_list.loc[x]['listing_id'])
+            self.select_edit_options()
+            self.remove_previous_options()
 
-        self.show_bottom_action_panel()
-        self.confirm_changes()
-        self.close_update_complete_popup_window()
+            self.add_phone_models()
+            self.press_apply_changes()
+            self.update_option_sku(product_list.loc[x]['SKU'])
+
+            self.show_bottom_action_panel()
+            self.confirm_changes()
+            self.close_update_complete_popup_window()
+            self.reset_action()
+            x += 1
+            time.sleep(3)
+
         self.close_windows()
-
 
 pk = Pinkoi()
 # pk.update_phone_models()
